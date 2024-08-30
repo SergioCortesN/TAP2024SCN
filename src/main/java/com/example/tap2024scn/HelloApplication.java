@@ -4,39 +4,47 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import vistas.Calculadora;
 
 import java.io.IOException;
 
 public class HelloApplication extends Application {
 
-    private Button bt1, bt2, bt3;
-    private VBox vBox;
-    private HBox hBox;
-
+    private BorderPane bdpPrincipal;
+    private MenuBar mnbPrincipal;
+    private Menu menCompetencia1, menCompetencia2, menCompetencia3;
+    private MenuItem mitCalculadora;
     public void crearUI()
     {
-        bt1 = new Button("BOTON 1");
-        bt2 = new Button("BOTON 2");
-        bt3 = new Button("BOTON 3");
-        vBox = new VBox(bt1, bt2, bt3);
-        hBox = new HBox(bt1, bt2, bt3);
+        mitCalculadora = new MenuItem("Calculadora");
+        mitCalculadora.setOnAction(event -> new Calculadora());
+        menCompetencia1 = new Menu("Competencia1");
+        menCompetencia1.getItems().addAll(mitCalculadora);
+        mnbPrincipal = new MenuBar(menCompetencia1);
+        bdpPrincipal = new BorderPane();
+        bdpPrincipal.setTop(mnbPrincipal);
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         //FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         crearUI();
-        Scene scene = new Scene(hBox, 320, 240);
-        stage.setTitle("Hello!");
+        Scene scene = new Scene(bdpPrincipal,320,240);
+        stage.setTitle("");
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         launch();
     }
 }
