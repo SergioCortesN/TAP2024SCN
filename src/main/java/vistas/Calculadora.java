@@ -16,16 +16,21 @@ public class Calculadora extends Stage
     private VBox vBox;
     private Scene escena;
     private String[] strteclas = {"7","8","9","*","4","5","6","/","1","2","3","+","0",".","=","-"};
+    private double n1;
+    private double n2;
+    private String operador="";
+    private double resul;
     private void crearUI()
     {
         arBtns = new Button[4][4];
-        txtPantalla = new TextField("0");
+        txtPantalla = new TextField("");
         txtPantalla.setAlignment(Pos.CENTER_RIGHT);
         txtPantalla.setEditable(false);
         gdpteclado = new GridPane();
         CrearTeclado();
         vBox = new VBox(txtPantalla, gdpteclado);
         escena = new Scene(vBox, 400, 400);
+
     }
 
     private void CrearTeclado()
@@ -54,6 +59,31 @@ public class Calculadora extends Stage
 
     private void detectarTecla(String tecla)
     {
-        txtPantalla.appendText(tecla);
+        if (tecla.matches("[0-9.]")){
+            txtPantalla.appendText(tecla);
+        } else if (tecla.matches("[-+*/]")) {
+            operador = tecla;
+            n1=Double.parseDouble(txtPantalla.getText());
+            txtPantalla.clear();
+        } else if (tecla.matches("=")) {
+            n2 = Double.parseDouble(txtPantalla.getText());
+            switch (operador) {
+                case "+":
+                    resul = n1 + n2;
+                    break;
+                case "-":
+                    resul = n1 - n2;
+                    break;
+                case "*":
+                    resul = n1 * n2;
+                    break;
+                case "/":
+                    resul = n1 / n2;
+                    break;
+
+            }
+            txtPantalla.setText(String.valueOf(resul));
+        }
+
     }
 }
