@@ -11,6 +11,7 @@ public class Calculadora extends Stage
 {
 
     private Button[][] arBtns;
+    private Button btnClear;
     private TextField txtPantalla;
     private GridPane gdpteclado;
     private VBox vBox;
@@ -27,9 +28,13 @@ public class Calculadora extends Stage
         txtPantalla.setAlignment(Pos.CENTER_RIGHT);
         txtPantalla.setEditable(false);
         gdpteclado = new GridPane();
+        gdpteclado.setId("font-teclas");
         CrearTeclado();
-        vBox = new VBox(txtPantalla, gdpteclado);
+        btnClear = new Button("C");
+        btnClear.setId("font-clear");
+        vBox = new VBox(txtPantalla, gdpteclado, btnClear);
         escena = new Scene(vBox, 400, 400);
+        escena.getStylesheets().add(getClass().getResource("/styles/Calculadora.css").toString());
 
     }
 

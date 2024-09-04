@@ -1,6 +1,7 @@
 .root{
     /*-fx-background-color: "#FF0000";*/
-    -fx-background-image: url("../images/554284.jpg");
+    -fx-background-image: url("../images/554284.jpg"), url("../images/zedane.jpeg");
     -fx-background-size: auto;
-    -fx-background-position: center;
+    -fx-background-repeat: stretch no-repeat, no-repeat;
+    -fx-background-position: center, right;
 }
