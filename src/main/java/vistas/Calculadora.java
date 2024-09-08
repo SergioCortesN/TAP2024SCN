@@ -6,6 +6,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Calculadora extends Stage
 {
@@ -32,6 +34,7 @@ public class Calculadora extends Stage
         gdpteclado.setId("font-teclas");
         CrearTeclado();
         btnClear = new Button("C");
+        btnClear.setOnAction(event -> clear(btnClear));
         btnClear.setId("font-clear");
         vBox = new VBox(txtPantalla, gdpteclado, btnClear);
         escena = new Scene(vBox, 400, 400);
@@ -65,14 +68,42 @@ public class Calculadora extends Stage
 
     private void detectarTecla(String tecla)
     {
+
         if (tecla.matches("[0-9.]")){
             txtPantalla.appendText(tecla);
-        } else if (tecla.matches("[-+*/]")) {
-            operador = tecla;
-            n1=Double.parseDouble(txtPantalla.getText());
-            txtPantalla.clear();
-
-
+        } else if (tecla.matches("[-+/*]")) {
+            if (operador.isEmpty())
+            {
+                operador=tecla;
+                n1=Double.parseDouble(txtPantalla.getText());
+                txtPantalla.clear();
+            }else if (!operador.isEmpty())
+            {
+                n2=Double.parseDouble(txtPantalla.getText());
+                switch (operador)
+                {
+                    case "+":
+                        resul=n1+n2;
+                        break;
+                    case "-":
+                        resul=n1-n2;
+                        break;
+                    case "*":
+                        resul=n1*n2;
+                        break;
+                    case "/":
+                        if(n2==0)
+                        {
+                            txtPantalla.appendText("MATH ERROR");
+                            break;
+                        }
+                        resul=n1/n2;
+                }
+                operador=tecla;
+                n1=resul;
+                txtPantalla.clear();
+            }
+            
         } else if (tecla.matches("=")) {
             n2 = Double.parseDouble(txtPantalla.getText());
             switch (operador) {
@@ -91,7 +122,16 @@ public class Calculadora extends Stage
 
             }
             txtPantalla.setText(String.valueOf(resul));
+            resul=0;
+            operador="";
+        }
+    }
+
+        private void clear(Button btnClear)
+        {
+            resul=0;
+            txtPantalla.clear();
         }
 
-    }
 }
+
