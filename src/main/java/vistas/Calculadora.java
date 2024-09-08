@@ -21,6 +21,7 @@ public class Calculadora extends Stage
     private double n2;
     private String operador="";
     private double resul;
+
     private void crearUI()
     {
         arBtns = new Button[4][4];
@@ -70,6 +71,8 @@ public class Calculadora extends Stage
             operador = tecla;
             n1=Double.parseDouble(txtPantalla.getText());
             txtPantalla.clear();
+
+
         } else if (tecla.matches("=")) {
             n2 = Double.parseDouble(txtPantalla.getText());
             switch (operador) {

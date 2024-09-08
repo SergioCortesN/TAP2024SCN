@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import vistas.Calculadora;
+import vistas.Loteria;
 
 import java.io.IOException;
 
@@ -25,11 +26,11 @@ public class HelloApplication extends Application {
     public void crearUI()
     {
         mitCalculadora = new MenuItem("Calculadora");
-        mitLoteria = new MenuItem("Loteria");
         mitCalculadora.setOnAction(event -> new Calculadora());
+        mitLoteria = new MenuItem("Loteria");
+        mitLoteria.setOnAction(event -> new Loteria());
         menCompetencia1 = new Menu("Competencia1");
-        menCompetencia1.getItems().addAll(mitCalculadora);
-        menCompetencia1.getItems().addAll(mitLoteria);
+        menCompetencia1.getItems().addAll(mitCalculadora, mitLoteria);
         mnbPrincipal = new MenuBar(menCompetencia1);
         bdpPrincipal = new BorderPane();
         bdpPrincipal.setTop(mnbPrincipal);
