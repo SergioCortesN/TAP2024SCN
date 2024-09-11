@@ -23,11 +23,12 @@ public class Calculadora extends Stage
     private double n2;
     private String operador="";
     private double resul;
+    private boolean botonIgualPress=false;
 
     private void crearUI()
     {
         arBtns = new Button[4][4];
-        txtPantalla = new TextField("");
+        txtPantalla = new TextField();
         txtPantalla.setAlignment(Pos.CENTER_RIGHT);
         txtPantalla.setEditable(false);
         gdpteclado = new GridPane();
@@ -68,68 +69,83 @@ public class Calculadora extends Stage
 
     private void detectarTecla(String tecla)
     {
-
+        if (botonIgualPress)
+        {
+            txtPantalla.clear();
+            botonIgualPress=false;
+        }
         if (tecla.matches("[0-9.]")){
             txtPantalla.appendText(tecla);
         } else if (tecla.matches("[-+/*]")) {
-            if (operador.isEmpty())
-            {
-                operador=tecla;
-                n1=Double.parseDouble(txtPantalla.getText());
+            if (operador.isEmpty()) {
+                operador = tecla;
+                n1 = Double.parseDouble(txtPantalla.getText());
                 txtPantalla.clear();
-            }else if (!operador.isEmpty())
-            {
-                n2=Double.parseDouble(txtPantalla.getText());
-                switch (operador)
-                {
+            } else if (!operador.isEmpty()) {
+                n2 = Double.parseDouble(txtPantalla.getText());
+                switch (operador) {
                     case "+":
-                        resul=n1+n2;
+                        resul = n1 + n2;
                         break;
                     case "-":
-                        resul=n1-n2;
+                        resul = n1 - n2;
                         break;
                     case "*":
-                        resul=n1*n2;
+                        resul = n1 * n2;
                         break;
                     case "/":
-                        if(n2==0)
-                        {
+                        if (n2 == 0) {
                             txtPantalla.appendText("MATH ERROR");
                             break;
+                        } else {
+                            resul = n1 / n2;
                         }
-                        resul=n1/n2;
+
+                        break;
                 }
-                operador=tecla;
-                n1=resul;
+                operador = tecla;
+                n1 = resul;
                 txtPantalla.clear();
             }
-            
         } else if (tecla.matches("=")) {
             n2 = Double.parseDouble(txtPantalla.getText());
             switch (operador) {
                 case "+":
                     resul = n1 + n2;
+                    txtPantalla.setText(String.valueOf(resul));
                     break;
                 case "-":
                     resul = n1 - n2;
+                    txtPantalla.setText(String.valueOf(resul));
                     break;
                 case "*":
                     resul = n1 * n2;
+                    txtPantalla.setText(String.valueOf(resul));
                     break;
                 case "/":
-                    resul = n1 / n2;
+                    if(n2==0)
+                    {
+                        txtPantalla.setText("MATH ERROR");
+                        break;
+                    }
+                    else
+                    {
+                        resul = n1 / n2;
+                        txtPantalla.setText(String.valueOf(resul));
+                    }
                     break;
-
             }
-            txtPantalla.setText(String.valueOf(resul));
             resul=0;
             operador="";
+            botonIgualPress=true;
         }
+
     }
 
         private void clear(Button btnClear)
         {
             resul=0;
+            operador="";
             txtPantalla.clear();
         }
 
