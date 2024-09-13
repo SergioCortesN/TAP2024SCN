@@ -151,8 +151,9 @@ public class Calculadora extends Stage
                             break;
                         case "/":
                             if (n2 == 0) {
+                                txtPantalla.clear();
                                 txtPantalla.appendText("MATH ERROR");
-                                break;
+                                return;
                             } else {
                                 resul = n1 / n2;
                             }
@@ -239,4 +240,3 @@ public class Calculadora extends Stage
 
 
 }
-
