@@ -11,20 +11,21 @@ import java.util.Queue;
 
 public class Calculadora extends Stage
 {
-
-    private Button[][] arBtns;
-    private Button btnClear;
-    private TextField txtPantalla;
-    private GridPane gdpteclado;
-    private VBox vBox;
-    private Scene escena;
-    private String[] strteclas = {"7","8","9","*","4","5","6","/","1","2","3","+","0",".","=","-"};
+    //DECLARACION DE TODAS LAS VARIABLES A UTILIZAR
+    private Button[][] arBtns; //ARREGLO PARA ALMACENAR LOS BOTONES DE LA CALCULADORA
+    private Button btnClear; //BOTON DE LIMPIADO
+    private TextField txtPantalla; //CAJA DE TEXTO PARA LA PANTALLA
+    private GridPane gdpteclado; //ALMACENA LOS BOTONES PARA EL TECLADO DE LA CALCULADORA
+    private VBox vBox; //PERMITE QUE LOS OBJETOS UTILIZADOS SE ORGANICEN DE MANERA VERTICAL
+    private Scene escena; //ALMACENA LA INTERFAZ
+    private String[] strteclas = {"7","8","9","*","4","5","6","/","1","2","3","+","0",".","=","-"}; //ARREGLO PARA NOMBRAR A LOS BOTONES
+    //VARIABLES PARA REALIZAR OPERACIONES CON LA CALCULADORA
     private double n1;
     private double n2;
     private String operador="";
     private double resul;
     private boolean botonIgualPress=false;
-
+    //CREACION DE LA INTERFAZ, AQUI SE DECLARAN TODAS LAS VARIABLES UTILIZADAS
     private void crearUI()
     {
         arBtns = new Button[4][4];
@@ -42,7 +43,7 @@ public class Calculadora extends Stage
         escena.getStylesheets().add(getClass().getResource("/styles/Calculadora.css").toString());
 
     }
-
+    //METODO QUE PERMITE LA CREACION DEL TECLADO
     private void CrearTeclado()
     {
         for (int i = 0; i <arBtns.length ; i++)
@@ -58,7 +59,7 @@ public class Calculadora extends Stage
             }
         }
     }
-
+    //CONSTRUCTOR QUE PERMITE LA VISUALIZACION DE LA CALCULADORA
     public Calculadora()
     {
         crearUI();
@@ -66,12 +67,14 @@ public class Calculadora extends Stage
         this.setScene(escena);
         this.show();
     }
-
+    //METODO PARA DARLE FUNCIONALIDAD A LA CALCULADORA
     private void detectarTecla(String tecla)
     {
         if (botonIgualPress)
         {
             txtPantalla.clear();
+            operador="";
+            resul=0;
             botonIgualPress=false;
         }
         if (tecla.matches("[0-9.]")){
@@ -89,23 +92,12 @@ public class Calculadora extends Stage
                 }
                 if (txtPantalla.getText().isEmpty()) {
                     txtPantalla.appendText("SINTAX ERROR: NULL");
-                    botonIgualPress=true;
-                    resul=0;
-                    operador="";
+                    botonIgualPress=true;   
                     return;
-                } else if (contador ==0 && puntos >=1) {
+                } else if ((contador ==0 && puntos >=1) || (contador >=1 && puntos >=2)) {
                     txtPantalla.clear();
                     txtPantalla.appendText("SINTAX ERROR: PUNTOS");
                     botonIgualPress=true;
-                    resul=0;
-                    operador="";
-                    return;
-                }else if (contador >=1 && puntos >=2) {
-                    txtPantalla.clear();
-                    txtPantalla.appendText("SINTAX ERROR: PUNTOS");
-                    botonIgualPress=true;
-                    resul=0;
-                    operador="";
                     return;
                 }
                 n1 = Double.parseDouble(txtPantalla.getText());
@@ -119,19 +111,10 @@ public class Calculadora extends Stage
                         contador++;
                     }
                 }
-                if (contador ==0 && puntos >=1) {
+                if ((contador ==0 && puntos >=1) || (contador >=1 && puntos >=2)) {
                     txtPantalla.clear();
                     txtPantalla.appendText("SINTAX ERROR: PUNTOS");
                     botonIgualPress=true;
-                    resul=0;
-                    operador="";
-                    return;
-                }else if (contador >=1 && puntos >=2) {
-                    txtPantalla.clear();
-                    txtPantalla.appendText("SINTAX ERROR: PUNTOS");
-                    botonIgualPress=true;
-                    resul=0;
-                    operador="";
                     return;
                 }
                 if(txtPantalla.getText().isEmpty()){
@@ -153,6 +136,7 @@ public class Calculadora extends Stage
                             if (n2 == 0) {
                                 txtPantalla.clear();
                                 txtPantalla.appendText("MATH ERROR");
+                                botonIgualPress=true;
                                 return;
                             } else {
                                 resul = n1 / n2;
@@ -178,22 +162,11 @@ public class Calculadora extends Stage
             if (txtPantalla.getText().isEmpty()) {
                 txtPantalla.appendText("SINTAX ERROR: NULL");
                 botonIgualPress=true;
-                resul=0;
-                operador="";
                 return;
-            } else if (contador ==0 && puntos >=1) {
+            } else if ((contador ==0 && puntos >=1) || (contador >=1 && puntos >=2)) {
                 txtPantalla.clear();
                 txtPantalla.appendText("SINTAX ERROR: PUNTOS");
                 botonIgualPress=true;
-                resul=0;
-                operador="";
-                return;
-            }else if (contador >=1 && puntos >=2) {
-                txtPantalla.clear();
-                txtPantalla.appendText("SINTAX ERROR: PUNTOS");
-                botonIgualPress=true;
-                resul=0;
-                operador="";
                 return;
             }
             n2 = Double.parseDouble(txtPantalla.getText());
@@ -214,6 +187,7 @@ public class Calculadora extends Stage
                     if(n2==0)
                     {
                         txtPantalla.setText("MATH ERROR");
+                        botonIgualPress=true;
                         break;
                     }
                     else
@@ -223,13 +197,11 @@ public class Calculadora extends Stage
                     }
                     break;
             }
-            resul=0;
-            operador="";
             botonIgualPress=true;
         }
 
     }
-
+    //METODO PARA ACCIONAR EL BOTON LIMPIAR
     private void clear(Button btnClear)
     {
         resul=0;
