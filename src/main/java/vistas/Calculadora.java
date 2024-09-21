@@ -70,18 +70,23 @@ public class Calculadora extends Stage
     //METODO PARA DARLE FUNCIONALIDAD A LA CALCULADORA
     private void detectarTecla(String tecla)
     {
-        if (botonIgualPress)
+        if (botonIgualPress && tecla.matches("[1-9.]"))
         {
             txtPantalla.clear();
             operador="";
             resul=0;
             botonIgualPress=false;
+        } else if (botonIgualPress && tecla.matches("[-+*/]")) {
+            operador=tecla;
         }
-        if (tecla.matches("[0-9.]")){
+
+        if (tecla.matches("[1-9.]")) {
             txtPantalla.appendText(tecla);
-        } else if (tecla.matches("[-+/*]")) {
-            if (operador.isEmpty()) {
-                operador = tecla;
+        } else if (txtPantalla.getText().isEmpty() && tecla.matches("-")) {
+            txtPantalla.appendText("-");
+        }else if (tecla.matches("[-+*/]")) {
+            if(operador.isEmpty()){
+                operador=tecla;
                 int puntos = txtPantalla.getText().length()-txtPantalla.getText().replace(".","").length();
                 int contador=0;
                 String datos=txtPantalla.getText();
@@ -90,17 +95,31 @@ public class Calculadora extends Stage
                         contador++;
                     }
                 }
-                if (txtPantalla.getText().isEmpty()) {
-                    txtPantalla.appendText("SINTAX ERROR: NULL");
-                    botonIgualPress=true;   
-                    return;
-                } else if ((contador ==0 && puntos >=1) || (contador >=1 && puntos >=2)) {
+                if ((contador ==0 && puntos >=1) || (contador >=1 && puntos >=2)) {
                     txtPantalla.clear();
                     txtPantalla.appendText("SINTAX ERROR: PUNTOS");
                     botonIgualPress=true;
                     return;
                 }
-                n1 = Double.parseDouble(txtPantalla.getText());
+                if (txtPantalla.getText().length()-txtPantalla.getText().replaceAll("-","").length() == 1){
+                    String dato = txtPantalla.getText().replaceAll("-","");
+                    n1 = Double.parseDouble(dato);
+                    n1 = (-1)*n1;
+                } else if (txtPantalla.getText().isEmpty()) {
+                   n1=0;
+                } else {
+                    n1 = Double.parseDouble(txtPantalla.getText());
+                }
+                txtPantalla.clear();
+            } else if (botonIgualPress && !operador.isEmpty()) {
+                if (txtPantalla.getText().length()-txtPantalla.getText().replaceAll("-","").length() == 1){
+                    String dato = txtPantalla.getText().replaceAll("-","");
+                    n1 = Double.parseDouble(dato);
+                    n1 = (-1)*n1;
+                }else {
+                    n1 = Double.parseDouble(txtPantalla.getText());
+                }
+                botonIgualPress=false;
                 txtPantalla.clear();
             } else if (!operador.isEmpty()) {
                 int puntos = txtPantalla.getText().length()-txtPantalla.getText().replace(".","").length();
@@ -117,40 +136,24 @@ public class Calculadora extends Stage
                     botonIgualPress=true;
                     return;
                 }
-                if(txtPantalla.getText().isEmpty()){
-                    operador=tecla;
-                }else if(!txtPantalla.getText().isEmpty())
-                {
+                if (txtPantalla.getText().length()-txtPantalla.getText().replaceAll("-","").length() == 1){
+                    String dato = txtPantalla.getText().replaceAll("-","");
+                    n2 = Double.parseDouble(dato);
+                    n2 = (-1)*n2;
+                }else if (txtPantalla.getText().isEmpty()) {
+                    n1=0;
+                }else {
                     n2 = Double.parseDouble(txtPantalla.getText());
-                    switch (operador) {
-                        case "+":
-                            resul = n1 + n2;
-                            break;
-                        case "-":
-                            resul = n1 - n2;
-                            break;
-                        case "*":
-                            resul = n1 * n2;
-                            break;
-                        case "/":
-                            if (n2 == 0) {
-                                txtPantalla.clear();
-                                txtPantalla.appendText("MATH ERROR");
-                                botonIgualPress=true;
-                                return;
-                            } else {
-                                resul = n1 / n2;
-                            }
-
-                            break;
-                    }
-                    operador = tecla;
-                    n1 = resul;
-                    txtPantalla.clear();
                 }
-
+                calcular();
+                operador=tecla;
+                n1=resul;
+                txtPantalla.clear();
             }
         } else if (tecla.matches("=")) {
+            if(txtPantalla.getText().isEmpty()){
+                txtPantalla.appendText("0");
+            }
             int puntos = txtPantalla.getText().length()-txtPantalla.getText().replace(".","").length();
             int contador=0;
             String datos=txtPantalla.getText();
@@ -159,47 +162,22 @@ public class Calculadora extends Stage
                     contador++;
                 }
             }
-            if (txtPantalla.getText().isEmpty()) {
-                txtPantalla.appendText("SINTAX ERROR: NULL");
-                botonIgualPress=true;
-                return;
-            } else if ((contador ==0 && puntos >=1) || (contador >=1 && puntos >=2)) {
+            if ((contador ==0 && puntos >=1) || (contador >=1 && puntos >=2)) {
                 txtPantalla.clear();
                 txtPantalla.appendText("SINTAX ERROR: PUNTOS");
                 botonIgualPress=true;
                 return;
             }
-            n2 = Double.parseDouble(txtPantalla.getText());
-            switch (operador) {
-                case "+":
-                    resul = n1 + n2;
-                    txtPantalla.setText(String.valueOf(resul));
-                    break;
-                case "-":
-                    resul = n1 - n2;
-                    txtPantalla.setText(String.valueOf(resul));
-                    break;
-                case "*":
-                    resul = n1 * n2;
-                    txtPantalla.setText(String.valueOf(resul));
-                    break;
-                case "/":
-                    if(n2==0)
-                    {
-                        txtPantalla.setText("MATH ERROR");
-                        botonIgualPress=true;
-                        break;
-                    }
-                    else
-                    {
-                        resul = n1 / n2;
-                        txtPantalla.setText(String.valueOf(resul));
-                    }
-                    break;
+            if (txtPantalla.getText().length()-txtPantalla.getText().replaceAll("-","").length() == 1){
+                String dato = txtPantalla.getText().replaceAll("-","");
+                n2 = Double.parseDouble(dato);
+                n2 = (-1)*n2;
+            }else {
+                n2 = Double.parseDouble(txtPantalla.getText());
             }
+            calcular();
             botonIgualPress=true;
         }
-
     }
     //METODO PARA ACCIONAR EL BOTON LIMPIAR
     private void clear(Button btnClear)
@@ -208,6 +186,37 @@ public class Calculadora extends Stage
         operador="";
         txtPantalla.clear();
     }
+
+    private void calcular(){
+        switch (operador) {
+            case "+":
+                resul = n1 + n2;
+                txtPantalla.setText(String.valueOf(resul));
+                break;
+            case "-":
+                resul = n1 - n2;
+                txtPantalla.setText(String.valueOf(resul));
+                break;
+            case "*":
+                resul = n1 * n2;
+                txtPantalla.setText(String.valueOf(resul));
+                break;
+            case "/":
+                if(n2==0)
+                {
+                    txtPantalla.setText("MATH ERROR");
+                    botonIgualPress=true;
+                    break;
+                }
+                else
+                {
+                    resul = n1 / n2;
+                    txtPantalla.setText(String.valueOf(resul));
+                }
+                break;
+        }
+    }
+
 
 
 

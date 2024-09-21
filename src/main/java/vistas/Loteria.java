@@ -28,7 +28,7 @@ public class Loteria extends Stage
     private GridPane gdpTablilla;
     private ImageView imvMazo;
     private Scene escena;
-    private String[] arImages = {"barril.jpeg","botella.jpeg","catrin.jpeg","chavorruco.jpeg","concha.jpeg","dorso.jpeg","luchador.jpeg","maceta.jpeg","rosa.jpeg","tacos.jpeg","venado.jpeg"};
+    private String[] arImages = {"1.jpeg","2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg","7.jpeg","8.jpeg","rosa.jpeg","tacos.jpeg","venado.jpeg"};
     private Button[][] arbtTab;
 
     private Panel pnlPrincipal;
