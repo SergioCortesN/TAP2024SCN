@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -15,31 +14,34 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
-
-import java.awt.image.BufferedImage;
+import javax.swing.*;
 import java.util.HashSet;
 import java.util.Set;
 
 
-public class Loteria extends Stage
-{
-    private HBox hbMain,hbButtons;
+public class Loteria extends Stage {
+    private HBox hbMain, hbButtons, hbBtnInRes;
     private VBox vbTablilla, vbMazo;
-    private Button btnAnt, btnSig, btnInit;
+    private Button btnAnt, btnSig, btnInit, btnReset;
     private Label lbTimer;
-    private GridPane []gdpTablilla;
+    private GridPane[] gdpTablilla;
     private ImageView imvMazo;
     private Scene escena;
     private String[] arImages = {"1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg", "8.jpeg", "9.jpeg", "10.jpeg", "11.jpeg", "12.jpeg", "13.jpeg", "14.jpeg", "15.jpeg", "16.jpeg", "17.jpeg", "18.jpeg", "19.jpeg", "20.jpeg", "21.jpeg", "22.jpeg", "23.jpeg", "24.jpeg", "25.jpeg", "26.jpeg", "27.jpeg", "28.jpeg", "29.jpeg", "30.jpeg", "31.jpeg", "32.jpeg", "33.jpeg", "34.jpeg", "35.jpeg", "36.jpeg", "37.jpeg", "38.jpeg", "39.jpeg", "40.jpeg", "41.jpeg", "42.jpeg", "43.jpeg", "44.jpeg", "45.jpeg", "46.jpeg", "47.jpeg", "48.jpeg", "49.jpeg", "50.jpeg", "51.jpeg", "52.jpeg", "53.jpeg", "54.jpeg"};
+    private Set<String>[] nombresCartas;
     private Button[][] arbtTab;
     private Panel pnlPrincipal;
-    private boolean botonInPress=false;
-    private int contador=0;
+    private boolean botonInPress = false;
+    private boolean casillaSeleccionada = false;
+    private boolean todasCartasSeleccionadas = false;
+    private boolean mazoTerminado = false;
+    private int numeroCartasSelec = 0;
+    private int contador = 0;
     private int segundos;
-    private int contador2=0;
-    private int pasar=0;
+    private int contador2 = 0;
     private Timeline temp;
-    private int []mazo;
+    private int[] mazo;
+
     public Loteria()
     {
         CrearUI();
@@ -60,6 +62,7 @@ public class Loteria extends Stage
         imvSig.setFitWidth(50);
 
         gdpTablilla = new GridPane[5];
+        nombresCartas = new HashSet[5];
         btnAnt = new Button();
         btnAnt.setGraphic(imvAnt);
         btnAnt.setOnAction(event -> anterior());
@@ -68,7 +71,6 @@ public class Loteria extends Stage
         btnSig.setOnAction(event -> siguiente());
         hbButtons = new HBox(btnAnt, btnSig);
         CrearTablilla();
-
         crearMazo();
         vbTablilla = new VBox(gdpTablilla[contador],hbButtons);
         hbMain = new HBox(vbTablilla,vbMazo);
@@ -94,6 +96,7 @@ public class Loteria extends Stage
             int []cartas=numeroRandom();
             int l=0;
             gdpTablilla[k] = new GridPane();
+            nombresCartas[k]= new HashSet<>();
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
@@ -104,9 +107,8 @@ public class Loteria extends Stage
                     arbtTab[j][i].setGraphic(imv);
                     imv.setFitHeight(150);
                     imv.setFitWidth(100);
-                    int in=j;
-                    int fin=i;
                     gdpTablilla[k].add(arbtTab[j][i],j,i);
+                    nombresCartas[k].add(arImages[cartas[l]]);
                     int tablilla=k;
                     int posicionBoton=l;
                     gdpTablilla[k].getChildren().get(l).setOnMouseClicked(event -> cambio((Button) gdpTablilla[tablilla].getChildren().get(posicionBoton)));
@@ -119,24 +121,16 @@ public class Loteria extends Stage
     }
 
     private void cambio(Button carta) {
-        if (botonInPress) {
-            carta.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
-        }
-
-        ImageView t= (ImageView) carta.getGraphic();
-        Image p=t.getImage();
-        Image k= new Image(getClass().getResource("/images loteria/"+arImages[mazo[contador2]]).toExternalForm());
-        PixelReader img1=p.getPixelReader();
-        PixelReader img2=k.getPixelReader();
-        Color color = img1.getColor(0, 0);
-        Color color2 = img2.getColor(0, 0);
-        if(color.equals(color2)){
-            System.out.println("iguales");
-        } else if (!color.equals(color2)) {
-            System.out.println("no iguales");
-        }
-
-
+        if (botonInPress && !casillaSeleccionada) {
+            if(nombresCartas[contador].contains(arImages[mazo[contador2]])){
+                carta.setDisable(true);
+                casillaSeleccionada=true;
+                numeroCartasSelec++;
+                if(numeroCartasSelec==16){
+                    todasCartasSeleccionadas=true;
+                }
+            }
+    }
     }
 
     private void crearMazo()
@@ -150,7 +144,11 @@ public class Loteria extends Stage
         btnInit = new Button("INICIAR");
         btnInit.getStyleClass().setAll("btn","btn-success");
         btnInit.setOnAction(event -> iniciar());
-        vbMazo = new VBox(lbTimer, imvMazo, btnInit);
+        btnReset = new Button("RESET");
+        btnReset.getStyleClass().setAll("btn","btn-info");
+        btnReset.setOnAction(event -> reiniciar());
+        hbBtnInRes = new HBox(btnInit,btnReset);
+        vbMazo = new VBox(lbTimer, imvMazo, hbBtnInRes);
         vbMazo.setSpacing(10);
     }
 
@@ -160,6 +158,27 @@ public class Loteria extends Stage
         botonInPress=true;
         mazoRandom();
         tiempo();
+    }
+
+    private void reiniciar(){
+        Image imgMazo = new Image(getClass().getResource("/images loteria/dorso.jpeg").toExternalForm());
+        imvMazo = new ImageView(imgMazo);
+        imvMazo.setFitHeight(400);
+        imvMazo.setFitWidth(250);
+        vbMazo.getChildren().set(1,imvMazo);
+        botonInPress = false;
+        casillaSeleccionada = false;
+        todasCartasSeleccionadas = false;
+        mazoTerminado = false;
+        contador2=0;
+        contador=0;
+        numeroCartasSelec=0;
+        mazoRandom();
+        CrearTablilla();
+        vbTablilla.getChildren().set(0,gdpTablilla[contador]);
+        temp.stop();
+        lbTimer = new Label("00:05");
+
     }
 
     private void anterior(){
@@ -183,7 +202,6 @@ public class Loteria extends Stage
             }
             vbTablilla.getChildren().set(0,gdpTablilla[contador]);
         }
-
     }
 
     private int[] numeroRandom() {
@@ -204,32 +222,44 @@ public class Loteria extends Stage
 
     private void tiempo(){
         segundos=5;
-        temp = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if(segundos>0){
-               lbTimer.setText("00:0"+segundos);
-                ImageView carta = new ImageView(getClass().getResource("/images loteria/"+arImages[mazo[contador2]]).toExternalForm());
-                carta.setFitHeight(400);
-                carta.setFitWidth(250);
-                vbMazo.getChildren().set(1,carta);
-               segundos--;
-            } else if (segundos==0) {
-               lbTimer.setText("00:05");
-               contador2++;
-               if(pasar<arImages.length){
-                   temp.stop();
-                   tiempo();
-                   pasar++;
-               }
-            }
-        }));
-        temp.setCycleCount(Timeline.INDEFINITE);
-        temp.play();
+        if(!todasCartasSeleccionadas && !mazoTerminado){
+            temp = new Timeline(new KeyFrame(Duration.seconds(0.001), event -> {
+                if(segundos>0 && contador2<arImages.length){
+                    lbTimer.setText("00:0"+segundos);
+                    ImageView carta = new ImageView(getClass().getResource("/images loteria/"+arImages[mazo[contador2]]).toExternalForm());
+                    carta.setFitHeight(400);
+                    carta.setFitWidth(250);
+                    vbMazo.getChildren().set(1,carta);
+                    segundos--;
+                } else if (segundos==0) {
+                    lbTimer.setText("00:05");
+                    casillaSeleccionada=false;
+                    if(contador2<arImages.length){
+                        temp.stop();
+                        tiempo();
+                        contador2++;
+                    }
+                    if (!todasCartasSeleccionadas && contador2==54) {
+                            JOptionPane.showMessageDialog(null, "BUEN INTENTO, SUERTE EN LA PROXIMA");
+                            temp.stop();
+                            botonInPress=false;
+                        }
+                    if (todasCartasSeleccionadas) {
+                        JOptionPane.showMessageDialog(null, "FELICITACIONES, ERES EL GANADOR");
+                        temp.stop();
+                        botonInPress=false;
+                    }
+                    }
+
+            }));
+            temp.setCycleCount(Timeline.INDEFINITE);
+            temp.play();
+        }
     }
 
     private void mazoRandom(){
         mazo = new int[arImages.length];
         Set<Integer> repes = new HashSet<>();
-
         for (int i = 0; i < mazo.length; i++) {
             int aux;
             do {

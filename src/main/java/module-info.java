@@ -7,5 +7,6 @@ module com.example.tap2024scn {
     opens com.example.tap2024scn to javafx.fxml;
     exports com.example.tap2024scn;
     requires org.kordamp.bootstrapfx.core;
+    requires mysql.connector.j;
     requires java.desktop;
 }
