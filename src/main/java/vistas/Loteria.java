@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -122,7 +123,14 @@ public class Loteria extends Stage {
 
     private void cambio(Button carta) {
         if (botonInPress && !casillaSeleccionada) {
-            if(nombresCartas[contador].contains(arImages[mazo[contador2]])){
+            ImageView img1= (ImageView) carta.getGraphic();
+            Image im1= img1.getImage();
+            PixelReader pr = im1.getPixelReader();
+            Color color1=pr.getColor(0,0);
+            Image imM = new Image(getClass().getResource("/images loteria/"+arImages[mazo[contador2]]).toExternalForm());
+            PixelReader pr2 = imM.getPixelReader();
+            Color color2=pr2.getColor(0,0);
+            if(nombresCartas[contador].contains(arImages[mazo[contador2]]) && color2.equals(color1)){
                 carta.setDisable(true);
                 casillaSeleccionada=true;
                 numeroCartasSelec++;
@@ -223,7 +231,7 @@ public class Loteria extends Stage {
     private void tiempo(){
         segundos=5;
         if(!todasCartasSeleccionadas && !mazoTerminado){
-            temp = new Timeline(new KeyFrame(Duration.seconds(0.001), event -> {
+            temp = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 if(segundos>0 && contador2<arImages.length){
                     lbTimer.setText("00:0"+segundos);
                     ImageView carta = new ImageView(getClass().getResource("/images loteria/"+arImages[mazo[contador2]]).toExternalForm());
