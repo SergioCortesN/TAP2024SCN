@@ -2,6 +2,7 @@ package vistas;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -55,10 +56,10 @@ public class Loteria extends Stage {
     {
 
         ImageView imvAnt,imvSig;
-        imvAnt = new ImageView(new Image(getClass().getResource("/images loteria/last.png").toExternalForm()));
+        imvAnt = new ImageView(new Image(getClass().getResource("/images_loteria/last.png").toExternalForm()));
         imvAnt.setFitHeight(50);
         imvAnt.setFitWidth(50);
-        imvSig = new ImageView(new Image(getClass().getResource("/images loteria/next.png").toExternalForm()));
+        imvSig = new ImageView(new Image(getClass().getResource("/images_loteria/next.png").toExternalForm()));
         imvSig.setFitHeight(50);
         imvSig.setFitWidth(50);
 
@@ -71,16 +72,18 @@ public class Loteria extends Stage {
         btnSig.setGraphic(imvSig);
         btnSig.setOnAction(event -> siguiente());
         hbButtons = new HBox(btnAnt, btnSig);
+        hbButtons.setAlignment(Pos.CENTER);
         CrearTablilla();
         crearMazo();
         vbTablilla = new VBox(gdpTablilla[contador],hbButtons);
         hbMain = new HBox(vbTablilla,vbMazo);
         pnlPrincipal = new Panel("LOTERIA MEXICANA :3");
-        pnlPrincipal.getStyleClass().add("panel-success");
+        pnlPrincipal.getStyleClass().add("panel-info");
         pnlPrincipal.setBody(hbMain);
         hbMain.setSpacing(20);
         hbMain.setPadding(new Insets(20));
-        escena=new Scene(pnlPrincipal,900,720);
+        hbMain.setAlignment(Pos.CENTER);
+        escena=new Scene(pnlPrincipal,1000,800);
         escena.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         escena.getStylesheets().add(getClass().getResource("/styles/Loteria.css").toExternalForm());
 
@@ -102,10 +105,11 @@ public class Loteria extends Stage {
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    img=new Image(getClass().getResource("/images loteria/"+arImages[cartas[l]]).toExternalForm());
+                    img=new Image(getClass().getResource("/images_loteria/"+arImages[cartas[l]]).toExternalForm());
                     imv=new ImageView(img);
                     arbtTab[j][i]=new Button();
                     arbtTab[j][i].setGraphic(imv);
+                    arbtTab[j][i].setId("tablilla");
                     imv.setFitHeight(150);
                     imv.setFitWidth(100);
                     gdpTablilla[k].add(arbtTab[j][i],j,i);
@@ -127,7 +131,7 @@ public class Loteria extends Stage {
             Image im1= img1.getImage();
             PixelReader pr = im1.getPixelReader();
             Color color1=pr.getColor(0,0);
-            Image imM = new Image(getClass().getResource("/images loteria/"+arImages[mazo[contador2]]).toExternalForm());
+            Image imM = new Image(getClass().getResource("/images_loteria/"+arImages[mazo[contador2]]).toExternalForm());
             PixelReader pr2 = imM.getPixelReader();
             Color color2=pr2.getColor(0,0);
             if(nombresCartas[contador].contains(arImages[mazo[contador2]]) && color2.equals(color1)){
@@ -143,33 +147,39 @@ public class Loteria extends Stage {
 
     private void crearMazo()
     {
-        Image imgMazo = new Image(getClass().getResource("/images loteria/dorso.jpeg").toExternalForm());
+        Image imgMazo = new Image(getClass().getResource("/images_loteria/dorso.jpeg").toExternalForm());
         lbTimer = new Label("00:05");
+        lbTimer.getStyleClass().setAll("lbl-h1","lbl-info");
         lbTimer.setFont(new Font("Arial", 50));
+        lbTimer.setStyle("-fx-text-fill: white;");
         imvMazo = new ImageView(imgMazo);
         imvMazo.setFitHeight(400);
         imvMazo.setFitWidth(250);
         btnInit = new Button("INICIAR");
         btnInit.getStyleClass().setAll("btn","btn-success");
         btnInit.setOnAction(event -> iniciar());
-        btnReset = new Button("RESET");
+        btnReset = new Button("BARAJAR");
         btnReset.getStyleClass().setAll("btn","btn-info");
         btnReset.setOnAction(event -> reiniciar());
         hbBtnInRes = new HBox(btnInit,btnReset);
+        hbBtnInRes.setAlignment(Pos.CENTER);
+
         vbMazo = new VBox(lbTimer, imvMazo, hbBtnInRes);
         vbMazo.setSpacing(10);
+        vbMazo.setAlignment(Pos.TOP_CENTER);
     }
 
 
     private void iniciar()
     {
+        btnReset.setDisable(true);
         botonInPress=true;
         mazoRandom();
         tiempo();
     }
 
     private void reiniciar(){
-        Image imgMazo = new Image(getClass().getResource("/images loteria/dorso.jpeg").toExternalForm());
+        Image imgMazo = new Image(getClass().getResource("/images_loteria/dorso.jpeg").toExternalForm());
         imvMazo = new ImageView(imgMazo);
         imvMazo.setFitHeight(400);
         imvMazo.setFitWidth(250);
@@ -184,8 +194,6 @@ public class Loteria extends Stage {
         mazoRandom();
         CrearTablilla();
         vbTablilla.getChildren().set(0,gdpTablilla[contador]);
-        temp.stop();
-        lbTimer = new Label("00:05");
 
     }
 
@@ -231,10 +239,10 @@ public class Loteria extends Stage {
     private void tiempo(){
         segundos=5;
         if(!todasCartasSeleccionadas && !mazoTerminado){
-            temp = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            temp = new Timeline(new KeyFrame(Duration.seconds(0.0001), event -> {
                 if(segundos>0 && contador2<arImages.length){
                     lbTimer.setText("00:0"+segundos);
-                    ImageView carta = new ImageView(getClass().getResource("/images loteria/"+arImages[mazo[contador2]]).toExternalForm());
+                    ImageView carta = new ImageView(getClass().getResource("/images_loteria/"+arImages[mazo[contador2]]).toExternalForm());
                     carta.setFitHeight(400);
                     carta.setFitWidth(250);
                     vbMazo.getChildren().set(1,carta);
@@ -251,13 +259,15 @@ public class Loteria extends Stage {
                             JOptionPane.showMessageDialog(null, "BUEN INTENTO, SUERTE EN LA PROXIMA");
                             temp.stop();
                             botonInPress=false;
-                        }
-                    if (todasCartasSeleccionadas) {
+                        btnReset.setDisable(false);
+                        }else if (todasCartasSeleccionadas) {
                         JOptionPane.showMessageDialog(null, "FELICITACIONES, ERES EL GANADOR");
                         temp.stop();
                         botonInPress=false;
+                        btnReset.setDisable(false);
+
                     }
-                    }
+                }
 
             }));
             temp.setCycleCount(Timeline.INDEFINITE);

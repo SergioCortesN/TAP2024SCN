@@ -25,6 +25,7 @@ public class Calculadora extends Stage
     private String operador="";
     private double resul;
     private boolean botonIgualPress=false;
+    private boolean solomenosenpantalla;
     //CREACION DE LA INTERFAZ, AQUI SE DECLARAN TODAS LAS VARIABLES UTILIZADAS
     private void crearUI()
     {
@@ -70,6 +71,11 @@ public class Calculadora extends Stage
     //METODO PARA DARLE FUNCIONALIDAD A LA CALCULADORA
     private void detectarTecla(String tecla)
     {
+        if(txtPantalla.getText().equals("-")){
+            solomenosenpantalla=true;
+        }else {
+            solomenosenpantalla=false;
+        }
         if (botonIgualPress && tecla.matches("[1-9.]"))
         {
             txtPantalla.clear();
@@ -77,14 +83,28 @@ public class Calculadora extends Stage
             resul=0;
             botonIgualPress=false;
         } else if (botonIgualPress && tecla.matches("[-+*/]")) {
-            operador=tecla;
+            int numletras=0;
+            for (int i = 0; i < txtPantalla.getText().length(); i++) {
+                if(!Character.isDigit(txtPantalla.getText().charAt(i))){
+                    numletras++;
+                }
+            }
+            if (numletras==0){
+                operador=tecla;
+            } else if (numletras>0) {
+                txtPantalla.clear();
+                operador="";
+                resul=0;
+            }
         }
 
         if (tecla.matches("[1-9.]")) {
             txtPantalla.appendText(tecla);
         } else if (txtPantalla.getText().isEmpty() && tecla.matches("-")) {
             txtPantalla.appendText("-");
-        }else if (tecla.matches("[-+*/]")) {
+        } else if (txtPantalla.getText().equals("-") && tecla.matches("-")) {
+            txtPantalla.clear();
+        } else if (tecla.matches("[-+*/]") && !solomenosenpantalla) {
             if(operador.isEmpty()){
                 operador=tecla;
                 int puntos = txtPantalla.getText().length()-txtPantalla.getText().replace(".","").length();
@@ -150,7 +170,7 @@ public class Calculadora extends Stage
                 n1=resul;
                 txtPantalla.clear();
             }
-        } else if (tecla.matches("=")) {
+        } else if (tecla.matches("=")&& !solomenosenpantalla) {
             if(txtPantalla.getText().isEmpty()){
                 txtPantalla.appendText("0");
             }

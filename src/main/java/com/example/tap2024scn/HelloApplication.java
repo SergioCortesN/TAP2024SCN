@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import models.Conexion;
 import vistas.Calculadora;
 import vistas.Loteria;
 
@@ -46,6 +47,8 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
+
+        Conexion.CrearConexion();
 
     }
 

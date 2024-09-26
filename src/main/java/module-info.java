@@ -1,4 +1,4 @@
-module com.example.tap2024scn {
+module com.example.tap2024scn.models {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
