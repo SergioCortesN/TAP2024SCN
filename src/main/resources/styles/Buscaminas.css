@@ -1,0 +1,86 @@
+/* Estilo general para el fondo de la ventana */
+.root {
+    -fx-background-color: #f3e5f5;
+    -fx-background-size: stretch;
+    -fx-background-repeat: stretch no-repeat;
+    -fx-background-position: center;
+    -fx-font-family: "Arial"; /* Fuente general */
+    -fx-font-size: 14px; /* Tamaño de fuente */
+}
+
+/* Estilo para el VBox principal */
+.vbox {
+    -fx-spacing: 10; /* Espaciado entre elementos */
+    -fx-padding: 20; /* Padding interior */
+}
+
+/* Estilo para los botones del tablero */
+.button {
+    -fx-background-color: #ffffff; /* Color de fondo de los botones */
+    -fx-border-color: #a64d9f; /* Color del borde en morado oscuro */
+    -fx-border-width: 1px; /* Ancho del borde */
+    -fx-font-size: 18px; /* Tamaño de fuente del texto */
+    -fx-text-fill: #4a148c; /* Color del texto en morado oscuro */
+    -fx-pref-width: 50px; /* Ancho preferido del botón */
+    -fx-pref-height: 50px; /* Altura preferida del botón */
+    -fx-cursor: hand; /* Cursor de mano al pasar sobre el botón */
+}
+
+/* Cambiar el color de fondo del botón al presionar */
+.button:pressed {
+    -fx-background-color: #e1bee7; /* Color de fondo al presionar */
+}
+
+/* Estilo para los botones que representan bombas */
+.bomb-button {
+    -fx-background-color: #ca9e9e; /* Color de fondo rojo */
+}
+
+/* Estilo para los botones que representan bombas en hover */
+.bomb-button:hover {
+    -fx-background-color: #c89d9d; /* Color de fondo más oscuro en hover */
+}
+
+/* Estilo para los botones que representan bombas en presionado */
+.bomb-button:pressed {
+    -fx-background-color: #c89d9d; /* Color de fondo aún más oscuro en presionado */
+}
+
+/* Estilo para el campo de texto */
+.text-field {
+    -fx-background-color: #ffffff; /* Color de fondo del campo de texto */
+    -fx-border-color: #a64d9f; /* Color del borde en morado oscuro */
+    -fx-border-width: 1px; /* Ancho del borde */
+    -fx-padding: 5; /* Padding interior */
+    -fx-font-size: 16px; /* Tamaño de fuente del texto */
+    -fx-text-fill: #4a148c; /* Color del texto en morado oscuro */
+}
+
+/* Estilo para el HBox */
+.hbox {
+    -fx-spacing: 10; /* Espaciado entre elementos */
+}
+
+/* Estilo para el botón "Iniciar" */
+#btniniciar {
+    -fx-background-color: #9c27b0; /* Color de fondo del botón "Iniciar" */
+    -fx-text-fill: white; /* Color del texto del botón "Iniciar" */
+    -fx-padding: 10 20; /* Padding interior para que quepa el texto */
+    -fx-font-weight: bold; /* Texto en negrita */
+    -fx-font-size: 18px; /* Tamaño de fuente del botón "Iniciar" */
+    -fx-pref-width: 150px; /* Ancho preferido para el botón "Iniciar" */
+    -fx-pref-height: 10px;
+}
+
+/* Cambiar color de fondo del botón "Iniciar" al pasar el mouse */
+#btniniciar:hover {
+    -fx-background-color: #7b1fa2; /* Color al pasar el mouse */
+}
+
+/* Estilo para los mensajes de alerta */
+.alert {
+    -fx-background-color: #e1bee7; /* Color de fondo para alertas */
+    -fx-border-color: #a64d9f; /* Color del borde para alertas */
+    -fx-text-fill: #4a148c; /* Color del texto para alertas */
+    -fx-padding: 10; /* Padding interior para alertas */
+}

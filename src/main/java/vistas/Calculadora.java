@@ -89,13 +89,11 @@ public class Calculadora extends Stage
                     numletras++;
                 }
             }
-            if (numletras==0){
-                operador=tecla;
-            } else if (numletras>0) {
+            if(numletras!=0){
                 txtPantalla.clear();
-                operador="";
-                resul=0;
+                txtPantalla.appendText(String.valueOf(resul));
             }
+            operador = tecla;
         }
 
         if (tecla.matches("[1-9.]")) {

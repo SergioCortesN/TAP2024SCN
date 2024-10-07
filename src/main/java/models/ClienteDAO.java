@@ -1,5 +1,9 @@
 package models;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -71,7 +75,24 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
-    public void selectAll(){
-
+    public ObservableList<ClienteDAO> selectAll(){
+        ObservableList<ClienteDAO> listaC = FXCollections.observableArrayList();
+        String query = "SELECT * FROM cliente";
+        ClienteDAO objCte;
+        try {
+            Statement stmt = Conexion.connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()) {
+                objCte = new ClienteDAO();
+                objCte.id_cliente = res.getInt("id_cliente");
+                objCte.nomcte = res.getString("nomcte");
+                objCte.numtel = res.getString("numtel");
+                objCte.emailcte = res.getString("emailcte");
+                listaC.add(objCte);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return listaC;
     }
 }

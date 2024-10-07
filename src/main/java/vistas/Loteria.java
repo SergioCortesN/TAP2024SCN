@@ -239,7 +239,7 @@ public class Loteria extends Stage {
     private void tiempo(){
         segundos=5;
         if(!todasCartasSeleccionadas && !mazoTerminado){
-            temp = new Timeline(new KeyFrame(Duration.seconds(0.0001), event -> {
+            temp = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 if(segundos>0 && contador2<arImages.length){
                     lbTimer.setText("00:0"+segundos);
                     ImageView carta = new ImageView(getClass().getResource("/images_loteria/"+arImages[mazo[contador2]]).toExternalForm());
