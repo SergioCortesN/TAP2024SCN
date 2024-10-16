@@ -1,10 +1,9 @@
-package models;
+package com.example.tap2024scn.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ClienteDAO {
@@ -46,15 +45,20 @@ public class ClienteDAO {
         this.emailcte = emailcte;
     }
 
-    public void insert() {
+    public int insert() {
+        int rowCont;
         String query = "INSERT INTO cliente(nomcte, numtel, emailcte)" +
     " VALUES('"+this.nomcte+"','"+this.numtel+"','"+this.emailcte+"')";
         try {
            Statement stmt = Conexion.connection.createStatement();
-           stmt.executeUpdate(query);
+           rowCont = stmt.executeUpdate(query);
+
         }catch (Exception e) {
+            rowCont = 0;
             e.printStackTrace();
+
         }
+        return rowCont;
     }
 
     public void update(){
@@ -84,10 +88,10 @@ public class ClienteDAO {
             ResultSet res = stmt.executeQuery(query);
             while (res.next()) {
                 objCte = new ClienteDAO();
-                objCte.id_cliente = res.getInt("id_cliente");
-                objCte.nomcte = res.getString("nomcte");
-                objCte.numtel = res.getString("numtel");
-                objCte.emailcte = res.getString("emailcte");
+                objCte.id_cliente = res.getInt(1);
+                objCte.nomcte = res.getString(2);
+                objCte.numtel = res.getString(3);
+                objCte.emailcte = res.getString(4);
                 listaC.add(objCte);
             }
         } catch (Exception e){

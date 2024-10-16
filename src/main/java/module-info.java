@@ -1,4 +1,4 @@
-module com.example.tap2024scn.models {
+module com.example.tap2024scn.com.example.tap2024scn.models {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
@@ -9,4 +9,5 @@ module com.example.tap2024scn.models {
     requires org.kordamp.bootstrapfx.core;
     requires mysql.connector.j;
     requires java.desktop;
+    opens com.example.tap2024scn.models;
 }

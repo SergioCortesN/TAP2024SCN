@@ -1,4 +1,4 @@
-package vistas;
+package com.example.tap2024scn.vistas;
 
 
 import javafx.geometry.Pos;
@@ -88,7 +88,11 @@ public class Buscaminas extends Stage
                 minaencontrada = false;
                 poderPonerBand = true;
             }catch (Exception e){
-
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("NUMERO NO VALIDO");
+                alerta.setHeaderText(null);
+                alerta.setContentText("FAVOR DE INGRESAR SOLAMENTE NUMEROS ENTEROS");
+                alerta.showAndWait();
             }
         });
         gdpTablero.setAlignment(Pos.CENTER);
@@ -326,4 +330,3 @@ public class Buscaminas extends Stage
         return ceros;
     }
 }
-

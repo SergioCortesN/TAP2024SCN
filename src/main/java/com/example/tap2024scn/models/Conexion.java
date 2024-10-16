@@ -1,4 +1,4 @@
-package models;
+package com.example.tap2024scn.models;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

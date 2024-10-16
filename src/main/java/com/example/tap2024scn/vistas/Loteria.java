@@ -1,4 +1,4 @@
-package vistas;
+package com.example.tap2024scn.vistas;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
