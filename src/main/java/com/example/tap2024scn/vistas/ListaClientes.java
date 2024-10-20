@@ -1,6 +1,6 @@
 package com.example.tap2024scn.vistas;
 
-import components.ButtonCell;
+import components.ButtonCellClientes;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,36 +36,35 @@ public class ListaClientes extends Stage {
         tvClientes = new TableView<ClienteDAO>();
         CrearTable();
         vBox = new VBox(tblMenu, tvClientes);
-        escena = new Scene(vBox, 500,250);
+        escena = new Scene(vBox, 500, 250);
 
     }
 
-    private void CrearTable()
-    {
+    private void CrearTable() {
         ClienteDAO objCte = new ClienteDAO();
 
-        TableColumn <ClienteDAO, String> tcNomCte = new TableColumn<>("Nombre Cliente");
+        TableColumn<ClienteDAO, String> tcNomCte = new TableColumn<>("Nombre Cliente");
         tcNomCte.setCellValueFactory(new PropertyValueFactory<>("nomcte"));
 
-        TableColumn <ClienteDAO, String> tcNumTel = new TableColumn<>("Telefono");
+        TableColumn<ClienteDAO, String> tcNumTel = new TableColumn<>("Telefono");
         tcNumTel.setCellValueFactory(new PropertyValueFactory<>("numtel"));
 
-        TableColumn <ClienteDAO, String> tcEmailCte = new TableColumn<>("Email");
+        TableColumn<ClienteDAO, String> tcEmailCte = new TableColumn<>("Email");
         tcEmailCte.setCellValueFactory(new PropertyValueFactory<>("emailcte"));
 
-        TableColumn <ClienteDAO, String> tcEditar = new TableColumn<>("");
+        TableColumn<ClienteDAO, String> tcEditar = new TableColumn<>("");
         tcEditar.setCellFactory(new Callback<TableColumn<ClienteDAO, String>, TableCell<ClienteDAO, String>>() {
             @Override
             public TableCell<ClienteDAO, String> call(TableColumn<ClienteDAO, String> clienteDAOStringTableColumn) {
-                return new ButtonCell("Editar");
+                return new ButtonCellClientes("Editar");
             }
         });
 
-        TableColumn <ClienteDAO, String> tcBorrar = new TableColumn<>("");
+        TableColumn<ClienteDAO, String> tcBorrar = new TableColumn<>("");
         tcBorrar.setCellFactory(new Callback<TableColumn<ClienteDAO, String>, TableCell<ClienteDAO, String>>() {
             @Override
             public TableCell<ClienteDAO, String> call(TableColumn<ClienteDAO, String> clienteDAOStringTableColumn) {
-                return new ButtonCell("Eliminar");
+                return new ButtonCellClientes("Eliminar");
             }
         });
 

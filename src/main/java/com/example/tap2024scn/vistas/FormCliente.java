@@ -36,7 +36,7 @@ public class FormCliente extends Stage
             txtnumtel.setText(objCte.getNumtel());
             txtemailcte.setText(objCte.getEmailcte());
         }else {
-            new ClienteDAO();
+            this.objCte = new ClienteDAO();
         }
         this.setTitle("Agregar Cliente :D");
         this.setScene(escena);
